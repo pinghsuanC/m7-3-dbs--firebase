@@ -1,43 +1,54 @@
-import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import Avatar from './Avatar';
+import React, { useContext, useEffect } from "react";
+import styled from "styled-components";
+import Avatar from "./Avatar";
 
-import { AppContext } from './AppContext';
+import { AppContext } from "./AppContext";
 
 const App = () => {
-  const {} = useContext(AppContext);
+	const { message } = useContext(AppContext);
+	const { appUser, signInWithGoogle, handleSignOut } = useContext(AppContext);
 
-  return (
-    <StyledPageWrapper>
-      <StyledHeader>
-        <button>Sign In</button>
-      </StyledHeader>
-      <StyledContainer>{message}</StyledContainer>
-    </StyledPageWrapper>
-  );
+	return (
+		<StyledPageWrapper>
+			<StyledHeader>
+				{appUser && appUser.email ? (
+					<StyledUserContainer>
+						<Avatar src={appUser.photoURL} />
+						<p>
+							{appUser.displayName} ({appUser.email})
+						</p>
+						<button onClick={handleSignOut}>Sign out</button>
+					</StyledUserContainer>
+				) : (
+					<button onClick={signInWithGoogle}>Sign In</button>
+				)}
+			</StyledHeader>
+			<StyledContainer>{message}</StyledContainer>
+		</StyledPageWrapper>
+	);
 };
 
 const StyledPageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 `;
 
 const StyledHeader = styled.nav`
-  background: #eaeaea;
-  padding: 6px 14px;
-  min-height: 48px;
+	background: #eaeaea;
+	padding: 6px 14px;
+	min-height: 48px;
 `;
 
 const StyledUserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 50px;
+	display: flex;
+	align-items: center;
+	height: 50px;
 `;
 
 const StyledContainer = styled.div`
-  background: #fafafa;
-  min-height: 400px;
-  padding: 14px;
+	background: #fafafa;
+	min-height: 400px;
+	padding: 14px;
 `;
 
 export default App;
